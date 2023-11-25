@@ -34,9 +34,11 @@ export class SessionGateway
   }
 
   async handleDisconnect(@ConnectedSocket() client: Socket) {
+    console.log(client.data);
     if (client.data.user.role === userRole.professor && client.data.sessionId) {
       const { sessionId } = client.data;
       this.sessionService.disconnectSession(sessionId);
+
       client.to(sessionId).emit('session-disconnected');
     }
   }
@@ -62,6 +64,7 @@ export class SessionGateway
     const { key } = body;
     const sessionId = this.sessionService.getSessionId(key);
     if (!sessionId) return;
+    client.emit('no-room');
     client.data.sessionId = sessionId;
 
     client.join(sessionId);
