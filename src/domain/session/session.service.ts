@@ -73,7 +73,7 @@ export class SessionService {
   }
 
   async verifySessionAuth(client: Socket) {
-    const token = client.handshake.headers['authorization'];
+    const token = client.handshake.auth.authorization.split('Bearer ')[1];
     if (!token) return false;
 
     const payload = this.authService.verifyToken(token);
