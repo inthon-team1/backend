@@ -91,7 +91,7 @@ export class SessionGateway
       question,
       lang,
     );
-
+    console.log(questionDto);
     // TODO: 번역
     client.emit('send-id', questionDto.id);
     client.to(sessionId).emit('receive-question', questionDto);
@@ -103,6 +103,7 @@ export class SessionGateway
     @MessageBody() body: any,
   ) {
     console.log(body);
+
     const { file, questionId } = body;
     console.log(file);
     const { user, sessionId } = client.data;
