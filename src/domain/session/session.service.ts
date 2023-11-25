@@ -17,7 +17,7 @@ export class SessionService {
 
   onlineSessionIds = {};
 
-  connectSession(lectureKey: string, sessionId: number) {
+  connectSession(lectureKey: string, sessionId: string) {
     this.onlineSessionIds[lectureKey] = sessionId;
   }
   disconnectSession(lectureKey: string) {
@@ -102,7 +102,7 @@ export class SessionService {
     });
 
     const entity = await this.sessionRepository.save(newSession);
-    this.connectSession(key, entity.id);
+    this.connectSession(key, entity.id.toString());
     return entity.id.toString();
   }
 }
