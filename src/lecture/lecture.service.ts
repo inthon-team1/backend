@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LectureEntity, TakesEntity } from 'src/entities';
@@ -84,5 +88,20 @@ export class LectureService {
       console.log(err);
       throw new BadRequestException('already taking');
     }
+  }
+
+  async deleteLecture(userId: number, lectureId: string) {
+    const lecture = await this.lectureRepository.findOne({
+      where: { id: lectureId },
+      relations: ['lecturer'],
+    });
+    if (!lecture) throw new NotFoundException('lecture not found');
+    if (lecture.lecturer.id !== userId)
+      throw new BadRequestException('not your lecture');
+    await this.lectureRepository.delete({ id: lectureId });
+  }
+
+  async outLecture(userId: number, lectureId: string) {
+    await this.takesRepository.delete({ userId, lectureId });
   }
 }

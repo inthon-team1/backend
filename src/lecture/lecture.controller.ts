@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Post,
@@ -16,6 +17,7 @@ import {
   ApiBody,
   ApiCreatedResponse,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
@@ -137,5 +139,28 @@ export class LectureController {
       throw new ForbiddenException('user is professor');
     }
     await this.lectureService.joinLecture(user.id, body.key);
+  }
+
+  @Delete('')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({
+    summary: '강의 삭제',
+    description:
+      'Authorization Header에 `Bearer ${token}` 을 넣어줘요 / student: 수강중 강의 삭제 / professor: 강의 중 강의 삭제',
+  })
+  @ApiBody({ type: JoinLectureRequestDto })
+  @ApiUnauthorizedResponse({ description: 'invalid token' })
+  @ApiBadRequestResponse({ description: '교수 / lecture 소유자가 아님' })
+  @ApiNotFoundResponse({ description: 'lecture id not found' })
+  @ApiOkResponse({ description: '강의 삭제 성공' })
+  async deleteLecture(
+    @InjectUser() user: User,
+    @Body() body: JoinLectureRequestDto,
+  ) {
+    if (user.role === 'professor') {
+      await this.lectureService.deleteLecture(user.id, body.key);
+    } else if (user.role === 'student') {
+      await this.lectureService.outLecture(user.id, body.key);
+    }
   }
 }
