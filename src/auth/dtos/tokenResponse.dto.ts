@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { userRole } from 'src/common';
 
 export class TokenResponseDto {
   @ApiProperty({
@@ -6,4 +7,7 @@ export class TokenResponseDto {
     description: 'jwt with no expiration',
   })
   token: string;
+
+  @ApiProperty({ example: 'student', description: 'student or professor' })
+  role: userRole;
 }
