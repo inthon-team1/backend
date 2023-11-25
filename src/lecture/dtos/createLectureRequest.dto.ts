@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, IntersectionType, PartialType } from '@nestjs/swagger';
 
 export class CreateLectureRequestDtoKr {
   @ApiProperty({ example: '객체지향프로그래밍' })
@@ -15,3 +15,7 @@ export class CreateLectureRequestDtoEn {
   @ApiProperty({ example: 'learn OOP' })
   descriptionEn: string;
 }
+
+export class modifyLectureRequestDto extends PartialType(
+  IntersectionType(CreateLectureRequestDtoKr, CreateLectureRequestDtoEn),
+) {}

@@ -1,12 +1,17 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LectureEntity, TakesEntity } from 'src/entities';
-import { LectureListResponseDto, LectureResponseDto } from 'src/lecture/dtos';
+import {
+  LectureListResponseDto,
+  LectureResponseDto,
+  modifyLectureRequestDto,
+} from 'src/lecture/dtos';
 import { hash } from 'bcrypt';
 
 @Injectable()
@@ -103,5 +108,25 @@ export class LectureService {
 
   async outLecture(userId: number, lectureId: string) {
     await this.takesRepository.delete({ userId, lectureId });
+  }
+
+  async modifyLecture(
+    userId: number,
+    lectureId: string,
+    body: modifyLectureRequestDto,
+  ) {
+    const lecture = await this.lectureRepository.findOne({
+      where: { id: lectureId },
+      relations: ['lecturer'],
+    });
+    if (!lecture) throw new NotFoundException('lecture not found');
+    if (lecture.lecturer.id !== userId)
+      throw new ForbiddenException('not your lecture');
+    if (body.titleKR) lecture.titleKR = body.titleKR;
+    if (body.titleEn) lecture.titleEN = body.titleEn;
+    if (body.descriptionKR) lecture.descriptionKR = body.descriptionKR;
+    if (body.descriptionEn) lecture.descriptionEN = body.descriptionEn;
+
+    await this.lectureRepository.save(lecture);
   }
 }

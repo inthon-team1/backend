@@ -4,7 +4,9 @@ import {
   Delete,
   ForbiddenException,
   Get,
+  Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -20,6 +22,7 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiParam,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
@@ -28,6 +31,7 @@ import {
   CreateLectureRequestDtoKr,
   JoinLectureRequestDto,
   LectureListResponseDto,
+  modifyLectureRequestDto,
 } from 'src/lecture/dtos';
 import { TranslationService } from 'src/translation/translation.service';
 
@@ -162,5 +166,28 @@ export class LectureController {
     } else if (user.role === 'student') {
       await this.lectureService.outLecture(user.id, body.key);
     }
+  }
+
+  @Put('/:lectureId')
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({
+    summary: '강의 수정',
+    description: 'Authorization Header에 `Bearer ${token}` 을 넣어줘요, 수정할 것만 보내도 됨',
+  })
+  @ApiBody({
+    type: modifyLectureRequestDto,
+  })
+  @ApiUnauthorizedResponse({ description: 'invalid token' })
+  @ApiForbiddenResponse({ description: '소유 아님 / 교수가 아님' })
+  @ApiNotFoundResponse({ description: '강의 없음' })
+  @ApiOkResponse({ description: '강의 수정 성공' })
+  @ApiParam({ name: 'lectureId', type: 'string' })
+  async modifyLecture(
+    @InjectUser() user: User,
+    @Body() body: modifyLectureRequestDto,
+    @Param('lectureId') lectureId: string,
+  ) {
+    if (user.role !== 'professor') throw new ForbiddenException('교수가 아님');
+    await this.lectureService.modifyLecture(user.id, lectureId, body);
   }
 }
