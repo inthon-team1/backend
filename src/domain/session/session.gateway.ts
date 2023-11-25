@@ -86,7 +86,9 @@ export class SessionGateway
     @MessageBody() body: { question: string; lang: 'KR' | 'EN' },
   ) {
     const { question, lang } = body;
+    console.log(question, lang);
     const { sessionId, user } = client.data;
+    console.log(sessionId, user);
     if (user.role !== userRole.student) return;
     const questionDto = await this.sessionService.createQuestion(
       user.id,
@@ -97,7 +99,10 @@ export class SessionGateway
     console.log(questionDto);
     // TODO: 번역
     client.emit('send-id', questionDto.id);
+    console.log('sendid');
     client.to(sessionId).emit('receive-question', questionDto);
+    console.log(sessionId, questionDto);
+    console.log(client.rooms);
   }
 
   @SubscribeMessage('send-answer')
