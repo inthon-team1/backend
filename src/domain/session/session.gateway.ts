@@ -27,7 +27,7 @@ export class SessionGateway
     const payload = await this.sessionService.verifySessionAuth(client);
 
     if (!payload) {
-      client.disconnect();
+      client.disconnect(true);
     }
     client.data.user = payload;
     console.log(client.data);
@@ -41,6 +41,9 @@ export class SessionGateway
       this.sessionService.disconnectSession(sessionId);
 
       client.to(sessionId).emit('session-disconnected');
+      client.disconnect(true);
+    } else {
+      client.disconnect(true);
     }
   }
 
