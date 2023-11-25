@@ -12,7 +12,7 @@ async function bootstrap() {
     .setDescription('inthon api')
     .setVersion('1.0')
     .build();
-
+  app.enableCors();
   const docs = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, docs);
   app.useGlobalFilters(new HttpExceptionFilter());
