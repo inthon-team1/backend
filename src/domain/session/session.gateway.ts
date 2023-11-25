@@ -30,6 +30,7 @@ export class SessionGateway
       client.disconnect();
     }
     client.data.user = payload;
+    console.log(client.data);
     return client;
   }
 
