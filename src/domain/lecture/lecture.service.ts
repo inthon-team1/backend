@@ -82,7 +82,7 @@ export class LectureService {
     section: number,
   ) {
     const rawKey = `${titleKR}${titleEN}${descriptionKR}${descriptionEN}`;
-    const hashedKey = await hash(rawKey, 3);
+    const hashedKey = (await hash(rawKey, 3)).replaceAll('/', '_');
     await this.lectureRepository.insert({
       titleKR,
       descriptionKR,
