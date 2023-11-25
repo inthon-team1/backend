@@ -26,4 +26,9 @@ export class AuthService {
     const token = this.jwtService.sign(payload, { secret: this.jwtSecret });
     return token;
   }
+
+  verifyToken(token: string): User {
+    const payload = this.jwtService.verify(token, { secret: this.jwtSecret });
+    return payload;
+  }
 }

@@ -10,5 +10,6 @@ import { UserModule } from 'src/domain/user/user.module';
   controllers: [AuthController],
   providers: [LocalStrategy, JwtStrategy, AuthService],
   imports: [JwtModule.register({}), UserModule],
+  exports: [AuthService],
 })
 export class AuthModule {}

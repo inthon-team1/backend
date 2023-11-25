@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { BullModule } from '@nestjs/bull';
+import { CacheModule } from '@nestjs/cache-manager';
+import { redisStore } from 'cache-manager-redis-store';
 
 import { AppController } from 'src/app.controller';
 import { AppService } from 'src/app.service';
@@ -26,6 +29,23 @@ import { SessionModule } from 'src/domain/session/session.module';
       database: process.env.DB_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost',
+        port: 6379,
+      },
+    }),
+    CacheModule.register({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      store: async () =>
+        await redisStore({
+          socket: {
+            host: 'localhost',
+            port: 6379,
+          },
+        }),
     }),
     AuthModule,
     UserModule,
