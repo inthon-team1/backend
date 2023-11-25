@@ -93,16 +93,18 @@ export class SessionGateway
     );
 
     // TODO: 번역
-
+    client.emit('send-id', questionDto.id);
     client.to(sessionId).emit('receive-question', questionDto);
   }
 
   @SubscribeMessage('send-answer')
   async sendAnswer(
     @ConnectedSocket() client: Socket,
-    @MessageBody() body: { file: File; questionId: number },
+    @MessageBody() body: any,
   ) {
+    console.log(body);
     const { file, questionId } = body;
+    console.log(file);
     const { user, sessionId } = client.data;
     if (user.role !== userRole.professor) return;
     //TODO: FILE TO TEXT
