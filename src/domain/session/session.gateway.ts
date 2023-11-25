@@ -8,7 +8,11 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway({ namespace: 'session', cors: { origin: '*' } })
+@WebSocketGateway({
+  namespace: 'session',
+  cors: { origin: '*' },
+  transports: ['websocket'],
+})
 export class SessionGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {

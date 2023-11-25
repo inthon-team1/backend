@@ -10,4 +10,7 @@ export class TokenResponseDto {
 
   @ApiProperty({ example: 'student', description: 'student or professor' })
   role: userRole;
+
+  @ApiProperty({ example: '차승민' })
+  name: string;
 }

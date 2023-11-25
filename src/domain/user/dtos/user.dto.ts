@@ -19,6 +19,10 @@ export class UserDto {
     description: 'professor 또는 student',
   })
   role: userRole;
+
+  @IsString()
+  @ApiProperty({ example: '차승민' })
+  name: string;
 }
 export class UserDtoWithId extends UserDto {
   @ApiProperty({ example: 1 })

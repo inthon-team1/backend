@@ -13,6 +13,18 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  async findOneById(id: number): Promise<UserDtoWithId> {
+    const userEntity = await this.userRepository.findOne({ where: { id } });
+
+    return {
+      id: userEntity.id,
+      username: userEntity.username,
+      password: userEntity.password,
+      role: userEntity.role,
+      name: userEntity.name,
+    };
+  }
+
   async findOneByUsername(username: string): Promise<UserDtoWithId> {
     const userEntity = await this.userRepository.findOne({
       where: { username },
@@ -23,6 +35,7 @@ export class UserService {
       username: userEntity.username,
       password: userEntity.password,
       role: userEntity.role,
+      name: userEntity.name,
     };
   }
 
@@ -35,6 +48,7 @@ export class UserService {
     try {
       const entity = this.userRepository.create({
         username: dto.username,
+        name: dto.name,
         password: hashedPw,
         role: dto.role,
       });
