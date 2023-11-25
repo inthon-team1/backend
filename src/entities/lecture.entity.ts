@@ -1,10 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
 import { UserEntity } from './user.entity';
 
 @Entity()
 export class LectureEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn()
+  id: string;
 
   @Column({ nullable: true })
   titleKR: string;
@@ -17,9 +17,6 @@ export class LectureEntity {
 
   @Column({ nullable: true })
   descriptionEN: string;
-
-  @Column()
-  passKey: string;
 
   @ManyToOne(() => UserEntity)
   lecturer: UserEntity;

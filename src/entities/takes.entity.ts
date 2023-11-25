@@ -7,7 +7,7 @@ export class TakesEntity {
   userId: number;
 
   @PrimaryColumn()
-  lectureId: number;
+  lectureId: string;
 
   @ManyToOne(() => UserEntity, {
     onDelete: 'CASCADE',

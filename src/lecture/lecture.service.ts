@@ -1,11 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LectureEntity, TakesEntity } from 'src/entities';
-import {
-  LectureListResponseDto,
-  LectureResponseDto,
-} from './dtos/lectureResponse.dto';
+import { LectureListResponseDto, LectureResponseDto } from 'src/lecture/dtos';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class LectureService {
@@ -25,13 +23,12 @@ export class LectureService {
     });
     const lectureDtos: LectureResponseDto[] = lectures.map((lecture) => {
       return {
-        id: lecture.id,
         lecturerName: lecture.lecturer.username,
         titleEN: lecture.titleEN,
         titleKR: lecture.titleKR,
         descriptionEN: lecture.descriptionEN,
         descriptionKR: lecture.descriptionKR,
-        passKey: lecture.passKey,
+        id: lecture.id,
       };
     });
     return { lectures: lectureDtos };
@@ -45,15 +42,47 @@ export class LectureService {
     const lectureDtos: LectureResponseDto[] = takes.map((take) => {
       const { lecture } = take;
       return {
-        id: lecture.id,
         lecturerName: lecture.lecturer.username,
         titleEN: lecture.titleEN,
         titleKR: lecture.titleKR,
         descriptionEN: lecture.descriptionEN,
         descriptionKR: lecture.descriptionKR,
-        passKey: lecture.passKey,
+        id: lecture.id,
       };
     });
     return { lectures: lectureDtos };
+  }
+
+  async createLecture(
+    professorId: number,
+    titleKR: string,
+    titleEN: string,
+    descriptionKR: string,
+    descriptionEN: string,
+  ) {
+    const rawKey = `${titleKR}${titleEN}${descriptionKR}${descriptionEN}`;
+    const hashedKey = await hash(rawKey, 3);
+    await this.lectureRepository.insert({
+      titleKR,
+      descriptionKR,
+      titleEN,
+      descriptionEN,
+      id: hashedKey,
+      lecturer: { id: professorId },
+    });
+
+    return hashedKey;
+  }
+
+  async joinLecture(userId: number, lectureId: string) {
+    try {
+      await this.takesRepository.insert({
+        lectureId,
+        userId,
+      });
+    } catch (err) {
+      console.log(err);
+      throw new BadRequestException('already taking');
+    }
   }
 }

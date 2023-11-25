@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LectureResponseDto {
-  @ApiProperty({ example: 1 })
-  id: number;
-
   @ApiProperty({ example: '객체지향프로그래밍' })
   titleKR: string;
 
@@ -17,7 +14,7 @@ export class LectureResponseDto {
   descriptionEN: string;
 
   @ApiProperty({ example: 'EXZCADQEFAD123SADFABZcvadj!@#' })
-  passKey: string;
+  id: string;
 
   @ApiProperty({ example: '박성빈' })
   lecturerName: string;
