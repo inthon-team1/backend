@@ -49,6 +49,7 @@ export class SessionGateway
     @MessageBody() body: socketCreateRoomDto,
   ) {
     if (client.data.user.role !== userRole.professor) return;
+    console.log(body);
     const { key } = body;
     const sessionId = await this.sessionService.createRoom(key);
     client.data.sessionId = sessionId;
@@ -63,8 +64,10 @@ export class SessionGateway
     if (client.data.user.role !== userRole.student) return;
     const { key } = body;
     const sessionId = this.sessionService.getSessionId(key);
-    if (!sessionId) return;
-    client.emit('no-room');
+    if (!sessionId) {
+      client.emit('no-room');
+      return;
+    }
     client.data.sessionId = sessionId;
 
     client.join(sessionId);
