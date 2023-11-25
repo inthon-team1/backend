@@ -48,6 +48,7 @@ export class SessionGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() body: socketCreateRoomDto,
   ) {
+    console.log('create-room', client.data, body);
     if (client.data.user.role !== userRole.professor) return;
     console.log(body);
     const { key } = body;
@@ -61,10 +62,12 @@ export class SessionGateway
     @ConnectedSocket() client: Socket,
     @MessageBody() body: socketCreateRoomDto,
   ) {
+    console.log('join-room', client.data, body);
     if (client.data.user.role !== userRole.student) return;
     const { key } = body;
     const sessionId = this.sessionService.getSessionId(key);
     if (!sessionId) {
+      console.log('noroom');
       client.emit('no-room');
       return;
     }
