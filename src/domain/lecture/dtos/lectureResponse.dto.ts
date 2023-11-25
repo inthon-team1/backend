@@ -16,6 +16,9 @@ export class LectureResponseDto {
   @ApiProperty({ example: 'EXZCADQEFAD123SADFABZcvadj!@#' })
   id: string;
 
+  @ApiProperty({ example: 'COSE234' })
+  courseID: string;
+
   @ApiProperty({ example: '박성빈' })
   lecturerName: string;
 }

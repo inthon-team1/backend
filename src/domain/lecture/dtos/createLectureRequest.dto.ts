@@ -6,6 +6,9 @@ export class CreateLectureRequestDtoKr {
 
   @ApiProperty({ example: '객체지향프로그래밍을 배웁니다' })
   descriptionKR: string;
+
+  @ApiProperty({ example: 'COSE234' })
+  courseID: string;
 }
 
 export class CreateLectureRequestDtoEn {
@@ -14,6 +17,9 @@ export class CreateLectureRequestDtoEn {
 
   @ApiProperty({ example: 'learn OOP' })
   descriptionEn: string;
+
+  @ApiProperty({ example: 'COSE234' })
+  courseID: string;
 }
 
 export class modifyLectureRequestDto extends PartialType(

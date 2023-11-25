@@ -32,12 +32,13 @@ export class LectureService {
     });
     const lectureDtos: LectureResponseDto[] = lectures.map((lecture) => {
       return {
-        lecturerName: lecture.lecturer.username,
+        lecturerName: lecture.lecturer.name,
         titleEN: lecture.titleEN,
         titleKR: lecture.titleKR,
         descriptionEN: lecture.descriptionEN,
         descriptionKR: lecture.descriptionKR,
         id: lecture.id,
+        courseID: lecture.courseID,
       };
     });
     return { lectures: lectureDtos };
@@ -51,12 +52,13 @@ export class LectureService {
     const lectureDtos: LectureResponseDto[] = takes.map((take) => {
       const { lecture } = take;
       return {
-        lecturerName: lecture.lecturer.username,
+        lecturerName: lecture.lecturer.name,
         titleEN: lecture.titleEN,
         titleKR: lecture.titleKR,
         descriptionEN: lecture.descriptionEN,
         descriptionKR: lecture.descriptionKR,
         id: lecture.id,
+        courseID: lecture.courseID,
       };
     });
     return { lectures: lectureDtos };
@@ -68,6 +70,7 @@ export class LectureService {
     titleEN: string,
     descriptionKR: string,
     descriptionEN: string,
+    courseID: string,
   ) {
     const rawKey = `${titleKR}${titleEN}${descriptionKR}${descriptionEN}`;
     const hashedKey = await hash(rawKey, 3);
@@ -76,6 +79,7 @@ export class LectureService {
       descriptionKR,
       titleEN,
       descriptionEN,
+      courseID,
       id: hashedKey,
       lecturer: { id: professorId },
     });
@@ -126,6 +130,7 @@ export class LectureService {
     if (body.titleEn) lecture.titleEN = body.titleEn;
     if (body.descriptionKR) lecture.descriptionKR = body.descriptionKR;
     if (body.descriptionEn) lecture.descriptionEN = body.descriptionEn;
+    if (body.courseID) lecture.courseID = body.courseID;
 
     await this.lectureRepository.save(lecture);
   }

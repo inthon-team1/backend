@@ -6,17 +6,20 @@ export class LectureEntity {
   @PrimaryColumn()
   id: string;
 
-  @Column({ nullable: true })
+  @Column()
   titleKR: string;
 
-  @Column({ nullable: true })
+  @Column()
   descriptionKR: string;
 
-  @Column({ nullable: true })
+  @Column()
   titleEN: string;
 
-  @Column({ nullable: true })
+  @Column()
   descriptionEN: string;
+
+  @Column()
+  courseID: string;
 
   @ManyToOne(() => UserEntity)
   lecturer: UserEntity;

@@ -89,6 +89,7 @@ export class LectureController {
       titleEN,
       descriptionKR,
       descriptionEN,
+      body.courseID,
     );
     return { key };
   }
@@ -119,6 +120,7 @@ export class LectureController {
       titleEn,
       descriptionKR,
       descriptionEn,
+      body.courseID,
     );
     return { key };
   }
