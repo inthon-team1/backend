@@ -9,6 +9,15 @@ export class CreateLectureRequestDtoKr {
 
   @ApiProperty({ example: 'COSE234' })
   courseID: string;
+
+  @ApiProperty({ example: 2023 })
+  year: number;
+
+  @ApiProperty({ example: 2 })
+  semester: number;
+
+  @ApiProperty({ example: 1 })
+  section: number;
 }
 
 export class CreateLectureRequestDtoEn {
@@ -20,6 +29,15 @@ export class CreateLectureRequestDtoEn {
 
   @ApiProperty({ example: 'COSE234' })
   courseID: string;
+
+  @ApiProperty({ example: 2023 })
+  year: number;
+
+  @ApiProperty({ example: 2 })
+  semester: number;
+
+  @ApiProperty({ example: 1 })
+  section: number;
 }
 
 export class modifyLectureRequestDto extends PartialType(

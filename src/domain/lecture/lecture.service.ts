@@ -39,6 +39,9 @@ export class LectureService {
         descriptionKR: lecture.descriptionKR,
         id: lecture.id,
         courseID: lecture.courseID,
+        year: lecture.year,
+        semester: lecture.semester,
+        section: lecture.section,
       };
     });
     return { lectures: lectureDtos };
@@ -59,6 +62,9 @@ export class LectureService {
         descriptionKR: lecture.descriptionKR,
         id: lecture.id,
         courseID: lecture.courseID,
+        year: lecture.year,
+        semester: lecture.semester,
+        section: lecture.section,
       };
     });
     return { lectures: lectureDtos };
@@ -71,6 +77,9 @@ export class LectureService {
     descriptionKR: string,
     descriptionEN: string,
     courseID: string,
+    year: number,
+    semester: number,
+    section: number,
   ) {
     const rawKey = `${titleKR}${titleEN}${descriptionKR}${descriptionEN}`;
     const hashedKey = await hash(rawKey, 3);
@@ -81,6 +90,9 @@ export class LectureService {
       descriptionEN,
       courseID,
       id: hashedKey,
+      year: year,
+      semester: semester,
+      section: section,
       lecturer: { id: professorId },
     });
 
@@ -131,6 +143,9 @@ export class LectureService {
     if (body.descriptionKR) lecture.descriptionKR = body.descriptionKR;
     if (body.descriptionEn) lecture.descriptionEN = body.descriptionEn;
     if (body.courseID) lecture.courseID = body.courseID;
+    if (body.year) lecture.year = body.year;
+    if (body.semester) lecture.semester = body.semester;
+    if (body.section) lecture.section = body.section;
 
     await this.lectureRepository.save(lecture);
   }

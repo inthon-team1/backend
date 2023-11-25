@@ -90,6 +90,9 @@ export class LectureController {
       descriptionKR,
       descriptionEN,
       body.courseID,
+      body.year,
+      body.semester,
+      body.section,
     );
     return { key };
   }
@@ -121,6 +124,9 @@ export class LectureController {
       descriptionKR,
       descriptionEn,
       body.courseID,
+      body.year,
+      body.semester,
+      body.section,
     );
     return { key };
   }

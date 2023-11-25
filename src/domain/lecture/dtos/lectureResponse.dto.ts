@@ -21,6 +21,15 @@ export class LectureResponseDto {
 
   @ApiProperty({ example: '박성빈' })
   lecturerName: string;
+
+  @ApiProperty({ example: 2023 })
+  year: number;
+
+  @ApiProperty({ example: 2 })
+  semester: number;
+
+  @ApiProperty({ example: 1 })
+  section: number;
 }
 
 export class LectureListResponseDto {

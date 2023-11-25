@@ -21,6 +21,15 @@ export class LectureEntity {
   @Column()
   courseID: string;
 
+  @Column({ default: 2023 })
+  year: number;
+
+  @Column({ default: 2 })
+  semester: number;
+
+  @Column({ default: 1 })
+  section: number;
+
   @ManyToOne(() => UserEntity)
   lecturer: UserEntity;
 }
