@@ -37,7 +37,7 @@ export class AuthController {
   async signup(@Body() userDto: UserDto) {
     const user = await this.userService.createUser(userDto);
     const token = await this.authService.signAccessToken(user);
-    return { token };
+    return { token, role: user.role };
   }
 
   @Post('/signin')
@@ -55,6 +55,6 @@ export class AuthController {
   @ApiUnauthorizedResponse({ description: 'invalid password' })
   async signin(@InjectUser() user: User) {
     const token = await this.authService.signAccessToken(user);
-    return { token };
+    return { token, role: user.role };
   }
 }
