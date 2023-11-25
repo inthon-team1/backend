@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { User } from 'src/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/domain/user/user.service';
 
 @Injectable()
 export class AuthService {

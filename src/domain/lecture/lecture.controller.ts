@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { LectureService } from 'src/lecture/lecture.service';
+import { LectureService } from 'src/domain/lecture/lecture.service';
 import { InjectUser } from 'src/decorators/injectUser';
 import { User } from 'src/common';
 import {
@@ -32,8 +32,8 @@ import {
   JoinLectureRequestDto,
   LectureListResponseDto,
   modifyLectureRequestDto,
-} from 'src/lecture/dtos';
-import { TranslationService } from 'src/translation/translation.service';
+} from 'src/domain/lecture/dtos';
+import { TranslationService } from 'src/domain/translation/translation.service';
 
 @Controller('lecture')
 @ApiTags('lecture')
@@ -172,7 +172,8 @@ export class LectureController {
   @UseGuards(AuthGuard('jwt'))
   @ApiOperation({
     summary: '강의 수정',
-    description: 'Authorization Header에 `Bearer ${token}` 을 넣어줘요, 수정할 것만 보내도 됨',
+    description:
+      'Authorization Header에 `Bearer ${token}` 을 넣어줘요, 수정할 것만 보내도 됨',
   })
   @ApiBody({
     type: modifyLectureRequestDto,

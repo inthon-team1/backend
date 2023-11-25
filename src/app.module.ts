@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
-import { UserModule } from 'src/user/user.module';
-import { LectureModule } from 'src/lecture/lecture.module';
-import { TranslationService } from './translation/translation.service';
-import { TranslationModule } from './translation/translation.module';
+
+import { AppController } from 'src/app.controller';
+import { AppService } from 'src/app.service';
+import { AuthModule } from 'src/domain/auth/auth.module';
+import { UserModule } from 'src/domain/user/user.module';
+import { LectureModule } from 'src/domain/lecture/lecture.module';
+import { TranslationService } from 'src/domain/translation/translation.service';
+import { TranslationModule } from 'src/domain/translation/translation.module';
+import { SessionModule } from 'src/domain/session/session.module';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { TranslationModule } from './translation/translation.module';
     UserModule,
     LectureModule,
     TranslationModule,
+    SessionModule,
   ],
   controllers: [AppController],
   providers: [AppService, TranslationService],

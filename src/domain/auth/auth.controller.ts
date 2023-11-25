@@ -8,11 +8,11 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthService } from 'src/domain/auth/auth.service';
 import { User } from 'src/common';
 import { InjectUser } from 'src/decorators/injectUser';
-import { SignInDto, UserDto } from 'src/user/dtos';
-import { UserService } from 'src/user/user.service';
+import { SignInDto, UserDto } from 'src/domain/user/dtos';
+import { UserService } from 'src/domain/user/user.service';
 import { TokenResponseDto } from './dtos/tokenResponse.dto';
 
 @Controller('auth')

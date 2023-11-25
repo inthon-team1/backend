@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { hash } from 'bcrypt';
 import { LectureEntity, TakesEntity } from 'src/entities';
 import {
   LectureListResponseDto,
   LectureResponseDto,
   modifyLectureRequestDto,
-} from 'src/lecture/dtos';
-import { hash } from 'bcrypt';
+} from 'src/domain/lecture/dtos';
 
 @Injectable()
 export class LectureService {

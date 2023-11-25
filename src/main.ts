@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './exceptions/httpExceptionFilter';
+import { IoAdapter } from '@nestjs/platform-socket.io';
+import { AppModule } from 'src/app.module';
+import { HttpExceptionFilter } from 'src/exceptions/httpExceptionFilter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,8 @@ async function bootstrap() {
   const docs = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, docs);
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.useWebSocketAdapter(new IoAdapter(app));
+
   await app.listen(8888);
 }
 bootstrap();
