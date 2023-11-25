@@ -11,7 +11,6 @@ import { Server, Socket } from 'socket.io';
 @WebSocketGateway({
   namespace: 'session',
   cors: { origin: '*' },
-  transports: ['websocket'],
 })
 export class SessionGateway
   implements OnGatewayConnection, OnGatewayDisconnect
