@@ -102,7 +102,7 @@ export class SessionService {
     await this.questionRepository.save(question);
     return {
       answerKR,
-      answerEN,
+      id: question.id,
       fileSrc,
     };
   }
