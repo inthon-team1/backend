@@ -49,6 +49,7 @@ export class AwsService {
           Key: fileName,
           Body: fileContent,
           ContentType: 'audio/mp3',
+          ACL: 'public-read',
         },
       });
       const data = await upload.promise();
@@ -64,7 +65,7 @@ export class AwsService {
       secretAccessKey: this.AWS_SECRET,
       region: this.REGION,
     });
-    const fileName = new Date().toString();
+    const fileName = new Date().getTime().toString();
     const fileContent = file.buffer;
     const upload = new AWS.S3.ManagedUpload({
       params: {
@@ -85,10 +86,11 @@ export class AwsService {
       secretAccessKey: this.AWS_SECRET,
       region: this.REGION,
     });
-    const jobName = new Date().toString();
+    const jobName = new Date().getTime().toString();
     const params: StartTranscriptionJobCommandInput = {
       TranscriptionJobName: jobName,
       LanguageCode: 'ko-KR',
+
       MediaFormat: 'mp3',
       Media: {
         MediaFileUri: fileSrc,
