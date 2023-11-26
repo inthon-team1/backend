@@ -95,6 +95,8 @@ export class AwsService {
       },
       OutputBucketName: this.BUCKET_NAME,
     };
+    console.log(params);
+    console.log(this.transcribeClient.config);
     await this.transcribeClient.send(new StartTranscriptionJobCommand(params));
     return jobName;
   }
