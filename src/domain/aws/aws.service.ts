@@ -36,17 +36,19 @@ export class AwsService {
 
   async uploadBuffer(buffer: Buffer) {
     try {
+      AWS.config.update({
+        accessKeyId: this.AWS_ACCESS,
+        secretAccessKey: this.AWS_SECRET,
+        region: this.REGION,
+      });
       const fileName = new Date().toString();
       const fileContent = buffer;
-      const blob = new Blob([fileContent], { type: 'audio/mp3' });
-      console.log(blob);
       const upload = new AWS.S3.ManagedUpload({
         params: {
           Bucket: this.BUCKET_NAME,
           Key: fileName,
           Body: fileContent,
           ContentType: 'audio/mp3',
-          ACL: 'public-read',
         },
       });
       const data = await upload.promise();
@@ -57,6 +59,11 @@ export class AwsService {
   }
 
   async uploadFile(file: Express.Multer.File) {
+    AWS.config.update({
+      accessKeyId: this.AWS_ACCESS,
+      secretAccessKey: this.AWS_SECRET,
+      region: this.REGION,
+    });
     const fileName = new Date().toString();
     const fileContent = file.buffer;
     const upload = new AWS.S3.ManagedUpload({
@@ -73,6 +80,11 @@ export class AwsService {
   }
 
   async startTranscriptionJob(fileSrc: string) {
+    AWS.config.update({
+      accessKeyId: this.AWS_ACCESS,
+      secretAccessKey: this.AWS_SECRET,
+      region: this.REGION,
+    });
     const jobName = new Date().toString();
     const params: StartTranscriptionJobCommandInput = {
       TranscriptionJobName: jobName,
