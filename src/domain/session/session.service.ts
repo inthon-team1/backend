@@ -31,6 +31,14 @@ export class SessionService {
     return this.onlineSessionIds[lectureKey];
   }
 
+  async getQuestions(sessionId: number) {
+    const questions = await this.questionRepository.find({
+      where: { session: { id: sessionId } },
+      order: { id: 'DESC' },
+    });
+    return questions;
+  }
+
   async createQuestion(
     studentId: number,
     sessionId: number,

@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { SessionService } from './session.service';
 import { InjectUser } from 'src/decorators/injectUser';
 import { User } from 'src/common';
@@ -18,6 +18,8 @@ export class SessionController {
     return sessions;
   }
 
-  @Get('/questions')
-  async getQuestions() {}
+  @Get('/questions/:sessionId')
+  async getQuestions(@Param('sessionId') sessionId: number) {
+    return await this.sessionService.getQuestions(sessionId);
+  }
 }
