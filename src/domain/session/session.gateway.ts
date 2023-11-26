@@ -142,6 +142,6 @@ export class SessionGateway
       fileSrc,
     );
 
-    client.to(sessionId).emit('receive-answer', answer);
+    this.server.to(sessionId).emit('receive-answer', answer);
   }
 }
