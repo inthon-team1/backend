@@ -10,6 +10,7 @@ import {
   ListObjectsV2Command,
 } from '@aws-sdk/client-s3';
 import * as AWS from 'aws-sdk';
+import { Blob } from 'buffer';
 
 @Injectable()
 export class AwsService {
@@ -43,7 +44,7 @@ export class AwsService {
         params: {
           Bucket: this.BUCKET_NAME,
           Key: fileName,
-          Body: fileContent,
+          Body: blob,
           ContentType: 'audio/mp3',
           ACL: 'public-read',
         },
