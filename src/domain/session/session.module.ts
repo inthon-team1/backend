@@ -6,6 +6,7 @@ import { SessionGateway } from 'src/domain/session/session.gateway';
 import { AuthModule } from 'src/domain/auth/auth.module';
 import { SessionEntity, QuestionEntity, TakesEntity } from 'src/entities';
 import { AwsService } from '../aws/aws.service';
+import { SessionController } from './session.controller';
 
 @Module({
   providers: [SessionService, SessionGateway, AwsService],
@@ -14,5 +15,6 @@ import { AwsService } from '../aws/aws.service';
     BullModule.registerQueue({ name: 'process-question-queue' }),
     TypeOrmModule.forFeature([SessionEntity, QuestionEntity, TakesEntity]),
   ],
+  controllers: [SessionController],
 })
 export class SessionModule {}
