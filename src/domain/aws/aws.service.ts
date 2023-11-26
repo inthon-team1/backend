@@ -44,7 +44,7 @@ export class AwsService {
         params: {
           Bucket: this.BUCKET_NAME,
           Key: fileName,
-          Body: blob,
+          Body: fileContent,
           ContentType: 'audio/mp3',
           ACL: 'public-read',
         },
