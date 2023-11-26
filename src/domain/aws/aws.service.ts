@@ -41,7 +41,7 @@ export class AwsService {
         secretAccessKey: this.AWS_SECRET,
         region: this.REGION,
       });
-      const fileName = new Date().getTime().toString() + '.m4a';
+      const fileName = new Date().getTime().toString() + '.webm';
       const fileContent = buffer;
       const upload = new AWS.S3.ManagedUpload({
         params: {
