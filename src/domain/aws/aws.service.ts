@@ -41,14 +41,14 @@ export class AwsService {
         secretAccessKey: this.AWS_SECRET,
         region: this.REGION,
       });
-      const fileName = new Date().getTime().toString() + '.mp3';
+      const fileName = new Date().getTime().toString() + '.m4a';
       const fileContent = buffer;
       const upload = new AWS.S3.ManagedUpload({
         params: {
           Bucket: this.BUCKET_NAME,
           Key: fileName,
           Body: fileContent,
-          ContentType: 'audio/mp3',
+          //ContentType: 'audio/m4a',
           ACL: 'public-read',
         },
       });

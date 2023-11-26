@@ -124,7 +124,7 @@ export class SessionGateway
 
     const jsonFileName = await this.awsService.startTranscriptionJob(link);
 
-    const transcriptFilename = jsonFileName + 'json';
+    const transcriptFilename = jsonFileName + '.json';
     console.log(transcriptFilename);
 
     const result = await this.awsService.getS3(transcriptFilename);
