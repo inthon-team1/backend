@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SessionService } from 'src/domain/session/session.service';
 import { SessionGateway } from 'src/domain/session/session.gateway';
 import { AuthModule } from 'src/domain/auth/auth.module';
-import { SessionEntity, QuestionEntity } from 'src/entities';
+import { SessionEntity, QuestionEntity, TakesEntity } from 'src/entities';
 import { AwsService } from '../aws/aws.service';
 
 @Module({
@@ -12,7 +12,7 @@ import { AwsService } from '../aws/aws.service';
   imports: [
     AuthModule,
     BullModule.registerQueue({ name: 'process-question-queue' }),
-    TypeOrmModule.forFeature([SessionEntity, QuestionEntity]),
+    TypeOrmModule.forFeature([SessionEntity, QuestionEntity, TakesEntity]),
   ],
 })
 export class SessionModule {}

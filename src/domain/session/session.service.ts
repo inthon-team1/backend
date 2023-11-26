@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Socket } from 'socket.io';
 import { AuthService } from 'src/domain/auth/auth.service';
-import { QuestionEntity, SessionEntity } from 'src/entities';
+import { QuestionEntity, SessionEntity, TakesEntity } from 'src/entities';
+import { userRole } from 'src/common';
 
 @Injectable()
 export class SessionService {
@@ -13,6 +14,8 @@ export class SessionService {
     private readonly sessionRepository: Repository<SessionEntity>,
     @InjectRepository(QuestionEntity)
     private readonly questionRepository: Repository<QuestionEntity>,
+    @InjectRepository(TakesEntity)
+    private readonly takesRepository: Repository<TakesEntity>,
   ) {}
 
   onlineSessionIds = {};
@@ -45,6 +48,30 @@ export class SessionService {
       [`question${lang}`]: question,
       id: entity.id,
     };
+  }
+
+  async getSessionInfo(userId: number, role: userRole) {
+    if (role === userRole.professor) {
+      const sessions = await this.sessionRepository.find({
+        where: { lecture: { lecturer: { id: userId } } },
+        relations: ['lecture', 'lecture.lecturer'],
+        order: { dateString: 'DESC', number: 'DESC' },
+      });
+      return sessions;
+    }
+    if (role === userRole.student) {
+      const takes = await this.takesRepository.find({
+        where: { userId },
+        relations: ['lecture', 'lecture.lecturer'],
+      });
+      const lectures = takes.map((take) => take.lecture);
+      const sessions = await this.sessionRepository.find({
+        where: { lecture: { id: In(lectures.map((lecture) => lecture.id)) } },
+        relations: ['lecture', 'lecture.lecturer'],
+        order: { dateString: 'DESC', number: 'DESC' },
+      });
+      return sessions;
+    }
   }
 
   async createAnswer(
