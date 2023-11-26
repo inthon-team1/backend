@@ -10,6 +10,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { socketCreateRoomDto, userRole } from 'src/common';
 import { SessionService } from 'src/domain/session/session.service';
+import { AwsService } from '../aws/aws.service';
 
 @WebSocketGateway({
   namespace: 'session',
@@ -19,7 +20,10 @@ import { SessionService } from 'src/domain/session/session.service';
 export class SessionGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(private readonly sessionService: SessionService) {}
+  constructor(
+    private readonly sessionService: SessionService,
+    private readonly awsService: AwsService,
+  ) {}
   @WebSocketServer()
   private readonly server: Server;
 
@@ -108,19 +112,27 @@ export class SessionGateway
   @SubscribeMessage('send-answer')
   async sendAnswer(
     @ConnectedSocket() client: Socket,
-    @MessageBody() body: any,
+    @MessageBody() body: { file: any; questionId: number },
   ) {
-    console.log(body);
-
     const { file, questionId } = body;
-    console.log(file);
+
     const { user, sessionId } = client.data;
     if (user.role !== userRole.professor) return;
-    //TODO: FILE TO TEXT
+
+    const link = await this.awsService.uploadBuffer(file);
+    console.log(link);
+
+    const jsonFileName = await this.awsService.startTranscriptionJob(link);
+
+    const transcriptFilename = jsonFileName + 'json';
+    console.log(transcriptFilename);
+
+    const result = await this.awsService.getS3(transcriptFilename);
+    console.log(result);
     //TODO: TRANSLATE
     const answerKR = '한긂';
     const answerEN = 'Hangum';
-    const fileSrc = 's3s3';
+    const fileSrc = link;
 
     const answer = await this.sessionService.createAnswer(
       questionId,

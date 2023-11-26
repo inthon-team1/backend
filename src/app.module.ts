@@ -13,6 +13,7 @@ import { LectureModule } from 'src/domain/lecture/lecture.module';
 import { TranslationService } from 'src/domain/translation/translation.service';
 import { TranslationModule } from 'src/domain/translation/translation.module';
 import { SessionModule } from 'src/domain/session/session.module';
+import { AwsModule } from './domain/aws/aws.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { SessionModule } from 'src/domain/session/session.module';
     LectureModule,
     TranslationModule,
     SessionModule,
+    AwsModule,
   ],
   controllers: [AppController],
   providers: [AppService, TranslationService],
