@@ -37,6 +37,8 @@ export class AwsService {
     try {
       const fileName = new Date().toString();
       const fileContent = buffer;
+      const blob = new Blob([fileContent], { type: 'audio/mp3' });
+      console.log(blob);
       const upload = new AWS.S3.ManagedUpload({
         params: {
           Bucket: this.BUCKET_NAME,
