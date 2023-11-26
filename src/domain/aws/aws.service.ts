@@ -90,7 +90,6 @@ export class AwsService {
       const params: StartTranscriptionJobCommandInput = {
         TranscriptionJobName: jobName,
         LanguageCode: 'ko-KR',
-
         MediaFormat: 'webm',
         Media: {
           MediaFileUri: fileSrc,
@@ -107,37 +106,43 @@ export class AwsService {
   }
 
   async getS3(key: string) {
-    const client = new S3Client({
-      credentials: {
-        accessKeyId: this.AWS_ACCESS,
-        secretAccessKey: this.AWS_SECRET,
-      },
-      region: this.REGION,
-    });
-    const listCom = new ListObjectsV2Command({
-      Bucket: this.BUCKET_NAME,
-      MaxKeys: 1000,
-    });
-
-    while (true) {
-      const response = await client.send(listCom);
-      const contents = response.Contents;
-
-      let flag = false;
-      contents.forEach((content) => {
-        if (content.Key === key) flag = true;
+    try {
+      const client = new S3Client({
+        credentials: {
+          accessKeyId: this.AWS_ACCESS,
+          secretAccessKey: this.AWS_SECRET,
+        },
+        region: this.REGION,
       });
-      if (flag) break;
+
+      const listCom = new ListObjectsV2Command({
+        Bucket: this.BUCKET_NAME,
+        MaxKeys: 1000,
+      });
+
+      while (true) {
+        const response = await client.send(listCom);
+        const contents = response.Contents;
+
+        let flag = false;
+        contents.forEach((content) => {
+          console.log(content);
+          if (content.Key === key) flag = true;
+        });
+        if (flag) break;
+      }
+
+      const command = new GetObjectCommand({
+        Bucket: this.BUCKET_NAME,
+        Key: key,
+      });
+
+      const response = await client.send(command);
+
+      const str = await response.Body.transformToString();
+      return JSON.parse(str).results.transcripts[0].transcript;
+    } catch (err) {
+      console.log(err);
     }
-
-    const command = new GetObjectCommand({
-      Bucket: this.BUCKET_NAME,
-      Key: key,
-    });
-
-    const response = await client.send(command);
-
-    const str = await response.Body.transformToString();
-    return JSON.parse(str).results.transcripts[0].transcript;
   }
 }
