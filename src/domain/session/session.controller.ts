@@ -15,6 +15,7 @@ export class SessionController {
       user.id,
       user.role,
     );
+    return sessions;
   }
 
   @Get('/questions')
