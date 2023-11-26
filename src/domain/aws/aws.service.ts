@@ -34,19 +34,23 @@ export class AwsService {
   }
 
   async uploadBuffer(buffer: Buffer) {
-    const fileName = new Date().toString();
-    const fileContent = buffer;
-    const upload = new AWS.S3.ManagedUpload({
-      params: {
-        Bucket: this.BUCKET_NAME,
-        Key: fileName,
-        Body: fileContent,
-        ContentType: 'audio/mp3',
-        ACL: 'public-read',
-      },
-    });
-    const data = await upload.promise();
-    return data.Location;
+    try {
+      const fileName = new Date().toString();
+      const fileContent = buffer;
+      const upload = new AWS.S3.ManagedUpload({
+        params: {
+          Bucket: this.BUCKET_NAME,
+          Key: fileName,
+          Body: fileContent,
+          ContentType: 'audio/mp3',
+          ACL: 'public-read',
+        },
+      });
+      const data = await upload.promise();
+      return data.Location;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async uploadFile(file: Express.Multer.File) {

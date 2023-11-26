@@ -118,7 +118,7 @@ export class SessionGateway
 
     const { user, sessionId } = client.data;
     if (user.role !== userRole.professor) return;
-
+    console.log(file);
     const link = await this.awsService.uploadBuffer(file);
     console.log(link);
 
