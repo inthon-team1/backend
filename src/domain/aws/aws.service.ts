@@ -48,7 +48,6 @@ export class AwsService {
           Bucket: this.BUCKET_NAME,
           Key: fileName,
           Body: fileContent,
-          //ContentType: 'audio/m4a',
           ACL: 'public-read',
         },
       });
@@ -81,26 +80,30 @@ export class AwsService {
   }
 
   async startTranscriptionJob(fileSrc: string) {
-    AWS.config.update({
-      accessKeyId: this.AWS_ACCESS,
-      secretAccessKey: this.AWS_SECRET,
-      region: this.REGION,
-    });
-    const jobName = new Date().getTime().toString();
-    const params: StartTranscriptionJobCommandInput = {
-      TranscriptionJobName: jobName,
-      LanguageCode: 'ko-KR',
+    try {
+      AWS.config.update({
+        accessKeyId: this.AWS_ACCESS,
+        secretAccessKey: this.AWS_SECRET,
+        region: this.REGION,
+      });
+      const jobName = new Date().getTime().toString();
+      const params: StartTranscriptionJobCommandInput = {
+        TranscriptionJobName: jobName,
+        LanguageCode: 'ko-KR',
 
-      MediaFormat: 'mp3',
-      Media: {
-        MediaFileUri: fileSrc,
-      },
-      OutputBucketName: this.BUCKET_NAME,
-    };
-    console.log(params);
-    console.log(this.transcribeClient.config);
-    await this.transcribeClient.send(new StartTranscriptionJobCommand(params));
-    return jobName;
+        MediaFormat: 'webm',
+        Media: {
+          MediaFileUri: fileSrc,
+        },
+        OutputBucketName: this.BUCKET_NAME,
+      };
+      await this.transcribeClient.send(
+        new StartTranscriptionJobCommand(params),
+      );
+      return jobName;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async getS3(key: string) {
