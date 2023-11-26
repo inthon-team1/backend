@@ -126,7 +126,6 @@ export class AwsService {
 
         let flag = false;
         contents.forEach((content) => {
-          console.log(content);
           if (content.Key === key) flag = true;
         });
         if (flag) break;
@@ -140,7 +139,9 @@ export class AwsService {
       const response = await client.send(command);
 
       const str = await response.Body.transformToString();
-      return JSON.parse(str).results.transcripts[0].transcript;
+      const result = JSON.parse(str).results.transcripts[0].transcript;
+      console.log(result);
+      return result;
     } catch (err) {
       console.log(err);
     }

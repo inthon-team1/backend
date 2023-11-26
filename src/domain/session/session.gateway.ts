@@ -130,7 +130,7 @@ export class SessionGateway
     const result = await this.awsService.getS3(transcriptFilename);
     console.log(result);
     //TODO: TRANSLATE
-    const answerKR = '한긂';
+    const answerKR = result;
     const answerEN = 'Hangum';
     const fileSrc = link;
 
